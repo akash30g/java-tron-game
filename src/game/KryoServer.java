@@ -16,8 +16,12 @@ import game.entities.Wall;
 
 public class KryoServer {
 
-	private Server server;
+	private static Server server = new Server();
 	private static List<Entity> entities;
+
+	/*
+	 * Test
+	 */
 
 	static {
 		entities = new ArrayList<>();
@@ -43,18 +47,17 @@ public class KryoServer {
 		}).start();
 	}
 
-	public KryoServer() {
-		server = new Server();
-
+	public static void start(int tcpPort, int udpPort) throws IOException {
 		// server.getKryo().register();
-	}
-
-	public void start(int tcpPort, int udpPort) throws IOException {
 		server.start();
 		server.bind(54555, 54777);
 		server.addListener(new Listener() {
 			public void received(Connection connection, Object object) {
+				
+			}
 
+			public void disconnected(Connection connection) {
+				
 			}
 		});
 	}
@@ -63,7 +66,7 @@ public class KryoServer {
 		return entities;
 	}
 
-	public void sendUDP() {
+	public static void sendUDP() {
 		server.sendToAllUDP("");
 	}
 }

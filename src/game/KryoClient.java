@@ -8,14 +8,11 @@ import com.esotericsoftware.kryonet.Listener;
 
 public class KryoClient {
 
-	private Client client;
+	private static Client client;
 
-	public KryoClient() {
+	public static void connect(String host, int tcpPort, int udpPort) throws IOException {
 		client = new Client();
 		// client.getKryo().register();
-	}
-
-	public void connect(String host, int tcpPort, int udpPort) throws IOException {
 		client.start();
 		client.connect(5000, "192.168.0.4", 54555, 54777);
 		client.addListener(new Listener() {

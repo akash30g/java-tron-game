@@ -39,7 +39,6 @@ public class Map extends JPanel {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				repaint();
-				System.out.println("Repainted");
 			}
 		});
 	}
@@ -52,8 +51,8 @@ public class Map extends JPanel {
 	}
 
 	private void drawBackground(Graphics g) {
-		int step = 25;
-		int max = 775;
+		int step = 15;
+		int max = 885;
 
 		for (int i = 0; i < max; i += step) {
 			g.drawLine(0, i, max, i);
@@ -79,7 +78,6 @@ public class Map extends JPanel {
 				g.fillRect(lightCycle.getX(), lightCycle.getY(), 25, 25);
 			}
 		}
-		System.out.println("Yes");
 	}
 
 }
