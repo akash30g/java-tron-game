@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -83,10 +84,10 @@ public class Application extends JFrame {
 		holder.add(new JLabel("Input your nickname:"));
 		holder.add(nickname);
 		holder.add(new JLabel("Choose your cycle color:"));
-		JComboBox<String> cycleColorComboBox = new JComboBox<>(new String[] { "Blue", "Green", "Red" });
+		JComboBox<Color> cycleColorComboBox = new JComboBox<>(new Color[] { Color.BLUE, Color.RED, Color.GREEN });
 		holder.add(cycleColorComboBox);
 		holder.add(new JLabel("Choose your jetwall color:"));
-		JComboBox<String> jetWallColorComboBox = new JComboBox<>(new String[] { "Blue", "Green", "Red" });
+		JComboBox<Color> jetWallColorComboBox = new JComboBox<>(new Color[] { Color.BLUE, Color.RED, Color.GREEN });
 		holder.add(jetWallColorComboBox);
 		JOptionPane.showMessageDialog(null, holder);
 	}

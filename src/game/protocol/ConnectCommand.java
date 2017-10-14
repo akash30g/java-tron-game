@@ -1,9 +1,17 @@
 package game.protocol;
 
+import java.awt.Color;
+
 public class ConnectCommand {
 	private String nickname;
-	private String cycleColor;
-	private String jetColor;
+	private Color cycleColor;
+	private Color jetColor;
+
+	public ConnectCommand(String nickname, Color cycleColor, Color jetColor) {
+		this.nickname = nickname;
+		this.cycleColor = cycleColor;
+		this.jetColor = jetColor;
+	}
 
 	public String getNickname() {
 		return nickname;
@@ -13,19 +21,19 @@ public class ConnectCommand {
 		this.nickname = nickname;
 	}
 
-	public String getCycleColor() {
+	public Color getCycleColor() {
 		return cycleColor;
 	}
 
-	public void setCycleColor(String cycleColor) {
+	public void setCycleColor(Color cycleColor) {
 		this.cycleColor = cycleColor;
 	}
 
-	public String getJetColor() {
+	public Color getJetColor() {
 		return jetColor;
 	}
 
-	public void setJetColor(String jetColor) {
+	public void setJetColor(Color jetColor) {
 		this.jetColor = jetColor;
 	}
 
