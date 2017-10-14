@@ -81,6 +81,8 @@ public class Map extends JPanel {
 				Color color = lightCycle.getCycleColor();
 				g.setColor(color);
 				g.fillRect(lightCycle.getX(), lightCycle.getY(), 25, 25);
+				g.drawString(((LightCycle) entity).getPlayer().getNickname(), lightCycle.getX(),
+						lightCycle.getY() - 25);
 			}
 		}
 	}

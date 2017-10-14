@@ -17,17 +17,17 @@ import game.entities.Wall;
 public class KryoServer {
 
 	private static Server server = new Server();
-	private static List<Entity> entities;
+	private static List<Entity> entities = new ArrayList<>();
 
 	/*
 	 * Test
 	 */
 
 	static {
-		entities = new ArrayList<>();
-		entities.add(new Wall(35, 45));
-		entities.add(new LightCycle(35, 45, Color.BLUE, Color.GREEN));
-		entities.add(new Wall(25, 45, (LightCycle) entities.get(1)));
+		// entities = new ArrayList<>();
+		// entities.add(new Wall(35, 45));
+		// entities.add(new LightCycle(35, 45, Color.BLUE, Color.GREEN, "test"));
+		// entities.add(new Wall(25, 45, (LightCycle) entities.get(1)));
 
 		new Thread(new Runnable() {
 
@@ -35,10 +35,12 @@ public class KryoServer {
 			public void run() {
 				try {
 					while (true) {
-						Thread.sleep(200);
-						int random = new Random().nextInt(entities.size());
-						entities.get(random).setX(entities.get(random).getX() + (random + 1) * 5);
-						entities.get(random).setY(entities.get(random).getY() + (random + 1) * 5);
+						Thread.sleep(100);
+						if (!entities.isEmpty()) {
+							int random = new Random().nextInt(entities.size());
+							entities.get(random).setX(entities.get(random).getX() + (random + 1) * 2);
+							entities.get(random).setY(entities.get(random).getY() + (random + 1) * 3);
+						}
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -83,8 +85,12 @@ public class KryoServer {
 	}
 
 	public static void sendEntities() {
+		if (entities.isEmpty()) {
+			return;
+		}
 		StringBuilder sb = new StringBuilder();
 		for (Entity entity : entities) {
+			sb.append("ENTITIES").append(">");
 			if (entity instanceof LightCycle) {
 				LightCycle lightCycle = (LightCycle) entity;
 				sb.append(lightCycle).append(">");
@@ -94,7 +100,8 @@ public class KryoServer {
 				sb.append(wall).append(">");
 			}
 		}
-		server.sendToAllUDP(sb.toString());
+		String result = sb.subSequence(0, sb.length() - 1).toString();
+		server.sendToAllUDP(result);
 	}
 
 	private static void processData(String object, Connection connection) {

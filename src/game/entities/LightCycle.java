@@ -79,4 +79,10 @@ public class LightCycle extends Entity {
 		this.player = player;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getClass().getSimpleName()).append(";").append(getX()).append(";").append(getY());
+		return sb.toString();
+	}
 }
