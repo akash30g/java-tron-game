@@ -13,7 +13,6 @@ import com.esotericsoftware.kryonet.Server;
 import game.entities.Entity;
 import game.entities.LightCycle;
 import game.entities.Wall;
-import game.protocol.ConnectCommand;
 
 public class KryoServer {
 
@@ -49,17 +48,12 @@ public class KryoServer {
 	}
 
 	public static void start(int tcpPort, int udpPort) throws IOException {
-		server.getKryo().register(ConnectCommand.class);
 		server.start();
 		server.bind(tcpPort, udpPort);
 		server.addListener(new Listener() {
 			public void received(Connection connection, Object object) {
-				if (object instanceof ConnectCommand) {
-					ConnectCommand connectCommand = (ConnectCommand) object;
-					Color cycleColor = connectCommand.getCycleColor();
-					Color jetColor = connectCommand.getJetColor();
-					String nickname = connectCommand.getNickname();
-					entities.add(new LightCycle(15, 15, cycleColor, jetColor, nickname));
+				if (object instanceof String) {
+					processData((String) object);
 				}
 			}
 
@@ -76,4 +70,19 @@ public class KryoServer {
 	public static void sendUDP() {
 		server.sendToAllUDP("");
 	}
+
+	private static void processData(String object) {
+		String[] data = object.split(";");
+		if (data[0].equals("CONNECT")) {
+			processConnectData(data);
+		}
+	}
+
+	private static void processConnectData(String[] data) {
+		String nickname = data[1];
+		Color cycleColor = ColorUtils.stringToColor(data[2]);
+		Color jetColor = ColorUtils.stringToColor(data[3]);
+		entities.add(new LightCycle(15, 15, cycleColor, jetColor, nickname));
+	}
+
 }

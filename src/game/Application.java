@@ -1,9 +1,6 @@
 package game;
 
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.io.IOException;
 
 import javax.swing.BoxLayout;
@@ -78,18 +75,24 @@ public class Application extends JFrame {
 	}
 
 	private static void initPlayerMenu() {
-		JTextField nickname = new JTextField();
+		JTextField nicknameField = new JTextField();
 		JPanel holder = new JPanel();
 		holder.setLayout(new BoxLayout(holder, 1));
 		holder.add(new JLabel("Input your nickname:"));
-		holder.add(nickname);
+		holder.add(nicknameField);
 		holder.add(new JLabel("Choose your cycle color:"));
-		JComboBox<Color> cycleColorComboBox = new JComboBox<>(new Color[] { Color.BLUE, Color.RED, Color.GREEN });
+		JComboBox<String> cycleColorComboBox = new JComboBox<>(new String[] { "Blue", "Red", "Green" });
 		holder.add(cycleColorComboBox);
 		holder.add(new JLabel("Choose your jetwall color:"));
-		JComboBox<Color> jetWallColorComboBox = new JComboBox<>(new Color[] { Color.BLUE, Color.RED, Color.GREEN });
+		JComboBox<String> jetWallColorComboBox = new JComboBox<>(new String[] { "Blue", "Red", "Green" });
 		holder.add(jetWallColorComboBox);
 		JOptionPane.showMessageDialog(null, holder);
+		String nickname = nicknameField.getText();
+		String cycleColor = (String) cycleColorComboBox.getSelectedItem();
+		String jetColor = (String) jetWallColorComboBox.getSelectedItem();
+		String data = new StringBuilder().append("CONNECT").append(";").append(nickname).append(";").append(cycleColor)
+				.append(";").append(jetColor).toString();
+		KryoClient.send(data);
 	}
 
 }
