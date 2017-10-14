@@ -1,9 +1,17 @@
 package game;
 
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.io.IOException;
+
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class Application extends JFrame {
 
@@ -13,7 +21,7 @@ public class Application extends JFrame {
 
 	public static void main(String[] args) {
 
-		initMenu();
+		initMainMenu();
 
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -33,7 +41,7 @@ public class Application extends JFrame {
 		setLocationRelativeTo(null);
 	}
 
-	private static void initMenu() {
+	private static void initMainMenu() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Main menu:").append("\n");
 		sb.append("-----------------").append("\n");
@@ -45,13 +53,17 @@ public class Application extends JFrame {
 		case "1":
 			try {
 				KryoServer.start(12345, 12345);
+				KryoClient.connect("localhost", 12345, 12345);
+				initPlayerMenu();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Server start failed. Application shutdown.");
+				e.printStackTrace();
 			}
 			break;
 		case "2":
 			try {
 				KryoClient.connect("localhost", 12345, 12345);
+				initPlayerMenu();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Connection failed. Application shutdown.");
 			}
@@ -60,7 +72,23 @@ public class Application extends JFrame {
 			System.exit(0);
 			break;
 		default:
-			break;
+			System.exit(0);
 		}
 	}
+
+	private static void initPlayerMenu() {
+		JTextField nickname = new JTextField();
+		JPanel holder = new JPanel();
+		holder.setLayout(new BoxLayout(holder, 1));
+		holder.add(new JLabel("Input your nickname:"));
+		holder.add(nickname);
+		holder.add(new JLabel("Choose your cycle color:"));
+		JComboBox<String> cycleColorComboBox = new JComboBox<>(new String[] { "Blue", "Green", "Red" });
+		holder.add(cycleColorComboBox);
+		holder.add(new JLabel("Choose your jetwall color:"));
+		JComboBox<String> jetWallColorComboBox = new JComboBox<>(new String[] { "Blue", "Green", "Red" });
+		holder.add(jetWallColorComboBox);
+		JOptionPane.showMessageDialog(null, holder);
+	}
+
 }

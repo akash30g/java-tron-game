@@ -50,14 +50,14 @@ public class KryoServer {
 	public static void start(int tcpPort, int udpPort) throws IOException {
 		// server.getKryo().register();
 		server.start();
-		server.bind(54555, 54777);
+		server.bind(tcpPort, udpPort);
 		server.addListener(new Listener() {
 			public void received(Connection connection, Object object) {
-				
+
 			}
 
 			public void disconnected(Connection connection) {
-				
+
 			}
 		});
 	}

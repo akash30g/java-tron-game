@@ -14,7 +14,7 @@ public class KryoClient {
 		client = new Client();
 		// client.getKryo().register();
 		client.start();
-		client.connect(5000, "192.168.0.4", 54555, 54777);
+		client.connect(5000, host, tcpPort, udpPort);
 		client.addListener(new Listener() {
 			public void received(Connection connection, Object object) {
 
@@ -22,7 +22,7 @@ public class KryoClient {
 		});
 	}
 
-	public void send() {
+	public static void send() {
 		client.sendTCP("");
 	}
 }
