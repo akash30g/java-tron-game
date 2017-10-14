@@ -53,7 +53,7 @@ public class KryoServer {
 		server.addListener(new Listener() {
 			public void received(Connection connection, Object object) {
 				if (object instanceof String) {
-					processData((String) object);
+					processData((String) object, connection);
 				}
 			}
 
@@ -61,17 +61,43 @@ public class KryoServer {
 
 			}
 		});
+
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(100);
+						sendEntities();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}).start();
 	}
 
 	public static List<Entity> getEntities() {
 		return entities;
 	}
 
-	public static void sendUDP() {
-		server.sendToAllUDP("");
+	public static void sendEntities() {
+		StringBuilder sb = new StringBuilder();
+		for (Entity entity : entities) {
+			if (entity instanceof LightCycle) {
+				LightCycle lightCycle = (LightCycle) entity;
+				sb.append(lightCycle).append(">");
+			}
+			if (entity instanceof Wall) {
+				Wall wall = (Wall) entity;
+				sb.append(wall).append(">");
+			}
+		}
+		server.sendToAllUDP(sb.toString());
 	}
 
-	private static void processData(String object) {
+	private static void processData(String object, Connection connection) {
 		String[] data = object.split(";");
 		if (data[0].equals("CONNECT")) {
 			processConnectData(data);

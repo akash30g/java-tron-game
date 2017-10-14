@@ -24,7 +24,7 @@ public class Map extends JPanel {
 			public void run() {
 				while (true) {
 					try {
-						Thread.sleep(250);
+						Thread.sleep(50);
 						repaint();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
