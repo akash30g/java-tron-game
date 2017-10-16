@@ -58,6 +58,40 @@ public class LightCycle extends Entity {
 		}
 	}
 
+	public void turnLeft() {
+		switch (direction) {
+		case DOWN:
+			direction = Direction.RIGHT;
+			break;
+		case LEFT:
+			direction = Direction.DOWN;
+			break;
+		case RIGHT:
+			direction = Direction.UP;
+			break;
+		case UP:
+			direction = Direction.LEFT;
+			break;
+		}
+	}
+
+	public void turnRight() {
+		switch (direction) {
+		case DOWN:
+			direction = Direction.LEFT;
+			break;
+		case LEFT:
+			direction = Direction.UP;
+			break;
+		case RIGHT:
+			direction = Direction.DOWN;
+			break;
+		case UP:
+			direction = Direction.RIGHT;
+			break;
+		}
+	}
+
 	public void accelerate() {
 		if (velocity != 9) {
 			velocity++;

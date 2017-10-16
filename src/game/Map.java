@@ -12,6 +12,7 @@ import game.entities.Direction;
 import game.entities.Entity;
 import game.entities.LightCycle;
 import game.entities.Wall;
+import game.protocol.Query;
 
 public class Map extends JPanel {
 
@@ -46,18 +47,13 @@ public class Map extends JPanel {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == 37) {
-					KryoClient.getThisPlayer().setDirection(Direction.LEFT);
-				}
-				if (e.getKeyCode() == 38) {
-					KryoClient.getThisPlayer().setDirection(Direction.UP);
+					String query = Query.turnLeft(KryoClient.getNickname());
+					KryoClient.send(query);
 				}
 				if (e.getKeyCode() == 39) {
-					KryoClient.getThisPlayer().setDirection(Direction.RIGHT);
+					String query = Query.turnRight(KryoClient.getNickname());
+					KryoClient.send(query);
 				}
-				if (e.getKeyCode() == 40) {
-					KryoClient.getThisPlayer().setDirection(Direction.DOWN);
-				}
-				KryoClient.getThisPlayer().move();
 			}
 		});
 	}
@@ -94,7 +90,7 @@ public class Map extends JPanel {
 				LightCycle lightCycle = (LightCycle) entity;
 				Color color = lightCycle.getCycleColor();
 				g.setColor(color);
-				g.fillRect(lightCycle.getX(), lightCycle.getY(), 45, 15);
+				g.fillRect(lightCycle.getX(), lightCycle.getY(), 15, 15);
 				g.drawString(((LightCycle) entity).getPlayer().getNickname(), lightCycle.getX(),
 						lightCycle.getY() - 25);
 			}

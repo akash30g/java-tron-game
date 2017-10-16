@@ -21,32 +21,6 @@ public class KryoServer {
 	private static Server server = new Server();
 	private static List<LightCycle> lightCycles = new ArrayList<>();
 
-	/*
-	 * Test
-	 */
-
-	static {
-
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					while (true) {
-						Thread.sleep(100);
-						// if (!entities.isEmpty()) {
-						// int random = new Random().nextInt(entities.size());
-						// entities.get(random).setX(entities.get(random).getX() + (random + 1) * 2);
-						// entities.get(random).setY(entities.get(random).getY() + (random + 1) * 3);
-						// }
-					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}).start();
-	}
-
 	public static void start(int tcpPort, int udpPort) throws IOException {
 		server.start();
 		server.bind(tcpPort, udpPort);
@@ -69,6 +43,9 @@ public class KryoServer {
 				while (true) {
 					try {
 						Thread.sleep(100);
+						for (LightCycle lightCycle : lightCycles) {
+							lightCycle.move();
+						}
 						sendEntities();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -93,11 +70,28 @@ public class KryoServer {
 	private static void processData(String object, Connection connection) {
 		String[] data = object.split(" ");
 		if (data[0].equals("ADD")) {
-			processConnectData(data, connection);
+			processAddQuery(data, connection);
+		}
+		if (object.contains("TURN")) {
+			processTurnQuery(data, connection);
 		}
 	}
 
-	private static void processConnectData(String[] data, Connection connection) {
+	private static void processTurnQuery(String[] data, Connection connection) {
+		String nickname = data[1];
+		if (!isExist(nickname)) {
+			return;
+		}
+		String side = data[3];
+		LightCycle lightCycle = getByName(nickname);
+		if (side.equals("left")) {
+			lightCycle.turnLeft();
+		} else {
+			lightCycle.turnRight();
+		}
+	}
+
+	private static void processAddQuery(String[] data, Connection connection) {
 		String nickname = data[2];
 		if (isExist(nickname)) {
 			server.sendToTCP(connection.getID(), "REPLY FAILED Error. Such nickname is already registered");
@@ -119,6 +113,15 @@ public class KryoServer {
 			}
 		}
 		return false;
+	}
+
+	private static LightCycle getByName(String nickname) {
+		for (LightCycle lightCycle : lightCycles) {
+			if (lightCycle.getPlayer().getNickname().equals(nickname)) {
+				return lightCycle;
+			}
+		}
+		return null;
 	}
 
 }
