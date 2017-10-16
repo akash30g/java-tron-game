@@ -46,12 +46,17 @@ public class Map extends JPanel {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == 37) {
+				if (e.getKeyCode() == 37) { // LEFT ARROW
 					String query = Query.turnLeft(KryoClient.getNickname());
 					KryoClient.send(query);
-				}
-				if (e.getKeyCode() == 39) {
+				} else if (e.getKeyCode() == 39) { // RIGHT ARROW
 					String query = Query.turnRight(KryoClient.getNickname());
+					KryoClient.send(query);
+				} else if (e.getKeyCode() == 69) { // E
+					String query = Query.jetOff(KryoClient.getNickname());
+					KryoClient.send(query);
+				} else if (e.getKeyCode() == 81) { // Q
+					String query = Query.jetOn(KryoClient.getNickname());
 					KryoClient.send(query);
 				}
 			}
@@ -82,9 +87,9 @@ public class Map extends JPanel {
 		for (Entity entity : entities) {
 			if (entity instanceof Wall) {
 				Wall wall = (Wall) entity;
-				Color color = (wall.isJetWall()) ? wall.getOwner().getJetColor() : Color.RED;
+				Color color = wall.getOwner().getJetColor();
 				g.setColor(color);
-				g.fillRect(wall.getX(), wall.getY(), 10, 10);
+				g.fillRect(wall.getX(), wall.getY(), 7, 7);
 			}
 			if (entity instanceof LightCycle) {
 				LightCycle lightCycle = (LightCycle) entity;

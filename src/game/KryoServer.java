@@ -76,6 +76,23 @@ public class KryoServer {
 		if (object.contains("TURN")) {
 			processTurnQuery(data, connection);
 		}
+		if (object.contains("JETWALL")) {
+			processJetQuery(data, connection);
+		}
+	}
+
+	private static void processJetQuery(String[] data, Connection connection) {
+		String nickname = data[1];
+		if (!isExist(nickname)) {
+			return;
+		}
+		String dir = data[3];
+		LightCycle lightCycle = getByName(nickname);
+		if (dir.equals("true")) {
+			lightCycle.setJetWallOn(true);
+		} else {
+			lightCycle.setJetWallOn(false);
+		}
 	}
 
 	private static void processTurnQuery(String[] data, Connection connection) {

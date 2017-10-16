@@ -11,6 +11,7 @@ import com.esotericsoftware.kryonet.Listener;
 
 import game.entities.Entity;
 import game.entities.LightCycle;
+import game.entities.Wall;
 import game.protocol.Query;
 import game.utils.ColorUtils;
 
@@ -102,6 +103,13 @@ public class KryoClient {
 			if (lightCycle == null) {
 				return;
 			}
+			
+			if (lightCycle.isJetWallOn()) {
+				int wallX = lightCycle.getX();
+				int wallY = lightCycle.getY();
+				entities.add(new Wall(wallX, wallY, lightCycle));
+			}
+			
 			lightCycle.setX(x);
 			lightCycle.setY(y);
 			lightCycle.setJetWallOn(isJetOn);
