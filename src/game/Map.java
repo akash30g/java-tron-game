@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import game.entities.Direction;
 import game.entities.Entity;
 import game.entities.LightCycle;
 import game.entities.Wall;
@@ -44,6 +45,19 @@ public class Map extends JPanel {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == 37) {
+					KryoClient.getThisPlayer().setDirection(Direction.LEFT);
+				}
+				if (e.getKeyCode() == 38) {
+					KryoClient.getThisPlayer().setDirection(Direction.UP);
+				}
+				if (e.getKeyCode() == 39) {
+					KryoClient.getThisPlayer().setDirection(Direction.RIGHT);
+				}
+				if (e.getKeyCode() == 40) {
+					KryoClient.getThisPlayer().setDirection(Direction.DOWN);
+				}
+				KryoClient.getThisPlayer().move();
 			}
 		});
 	}
@@ -68,7 +82,7 @@ public class Map extends JPanel {
 	}
 
 	private void drawEntities(Graphics g) {
-		List<Entity> entities = KryoServer.getEntities();
+		List<Entity> entities = KryoClient.getEntities();
 		for (Entity entity : entities) {
 			if (entity instanceof Wall) {
 				Wall wall = (Wall) entity;
@@ -80,7 +94,7 @@ public class Map extends JPanel {
 				LightCycle lightCycle = (LightCycle) entity;
 				Color color = lightCycle.getCycleColor();
 				g.setColor(color);
-				g.fillRect(lightCycle.getX(), lightCycle.getY(), 25, 25);
+				g.fillRect(lightCycle.getX(), lightCycle.getY(), 15, 15);
 				g.drawString(((LightCycle) entity).getPlayer().getNickname(), lightCycle.getX(),
 						lightCycle.getY() - 25);
 			}

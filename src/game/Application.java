@@ -90,6 +90,7 @@ public class Application extends JFrame {
 		String nickname = nicknameField.getText();
 		String cycleColor = (String) cycleColorComboBox.getSelectedItem();
 		String jetColor = (String) jetWallColorComboBox.getSelectedItem();
+		KryoClient.setNickname(nickname);
 		String data = new StringBuilder().append("CONNECT").append(";").append(nickname).append(";").append(cycleColor)
 				.append(";").append(jetColor).toString();
 		KryoClient.send(data);

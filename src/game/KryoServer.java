@@ -36,11 +36,11 @@ public class KryoServer {
 				try {
 					while (true) {
 						Thread.sleep(100);
-						if (!entities.isEmpty()) {
-							int random = new Random().nextInt(entities.size());
-							entities.get(random).setX(entities.get(random).getX() + (random + 1) * 2);
-							entities.get(random).setY(entities.get(random).getY() + (random + 1) * 3);
-						}
+						// if (!entities.isEmpty()) {
+						// int random = new Random().nextInt(entities.size());
+						// entities.get(random).setX(entities.get(random).getX() + (random + 1) * 2);
+						// entities.get(random).setY(entities.get(random).getY() + (random + 1) * 3);
+						// }
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -107,12 +107,13 @@ public class KryoServer {
 	private static void processData(String object, Connection connection) {
 		String[] data = object.split(";");
 		if (data[0].equals("CONNECT")) {
-			processConnectData(data);
+			processConnectData(data, connection);
 		}
 	}
 
-	private static void processConnectData(String[] data) {
+	private static void processConnectData(String[] data, Connection connection) {
 		String nickname = data[1];
+		connection.setName(nickname);
 		Color cycleColor = ColorUtils.stringToColor(data[2]);
 		Color jetColor = ColorUtils.stringToColor(data[3]);
 		entities.add(new LightCycle(15, 15, cycleColor, jetColor, nickname));

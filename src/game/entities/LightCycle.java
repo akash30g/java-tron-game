@@ -31,6 +31,35 @@ public class LightCycle extends Entity {
 	private Color jetColor;
 	private Player player;
 
+	public void move() {
+		switch (direction) {
+		case UP:
+			setY(getY() - 15);
+			break;
+		case DOWN:
+			setY(getY() + 15);
+			break;
+		case LEFT:
+			setX(getX() - 15);
+			break;
+		case RIGHT:
+			setX(getX() + 15);
+			break;
+		}
+	}
+
+	public void accelerate() {
+		if (velocity != 9) {
+			velocity++;
+		}
+	}
+
+	public void slowDown() {
+		if (velocity != 1) {
+			velocity--;
+		}
+	}
+
 	public double getVelocity() {
 		return velocity;
 	}
@@ -82,7 +111,8 @@ public class LightCycle extends Entity {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(getClass().getSimpleName()).append(";").append(getX()).append(";").append(getY());
+		sb.append(getClass().getSimpleName()).append(";").append(getX()).append(";").append(getY()).append(";")
+				.append(getPlayer().getNickname());
 		return sb.toString();
 	}
 }
