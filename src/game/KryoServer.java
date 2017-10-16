@@ -32,7 +32,8 @@ public class KryoServer {
 			}
 
 			public void disconnected(Connection connection) {
-
+				LightCycle lightCycle = getByName(connection.toString());
+				lightCycles.remove(lightCycle);
 			}
 		});
 
@@ -42,7 +43,7 @@ public class KryoServer {
 			public void run() {
 				while (true) {
 					try {
-						Thread.sleep(100);
+						Thread.sleep(300); // TODO change to 100
 						for (LightCycle lightCycle : lightCycles) {
 							lightCycle.move();
 						}
@@ -102,8 +103,22 @@ public class KryoServer {
 		Color jetColor = ColorUtils.stringToColor(data[4]);
 		int randX = 15; // TODO remove
 		int randY = 15; // TODO remove
-		lightCycles.add(new LightCycle(randX, randY, cycleColor, jetColor, nickname));
+		LightCycle newLightCycle = new LightCycle(randX, randY, cycleColor, jetColor, nickname);
+		lightCycles.add(newLightCycle);
 		server.sendToTCP(connection.getID(), "REPLY OKAY");
+		String query = Query.sendNewPlayer(nickname, data[3], data[4]);
+		server.sendToAllExceptTCP(connection.getID(), query);
+
+		if (lightCycles.size() > 1) {
+			for (LightCycle lightCycle : lightCycles) {
+				String thisNickname = lightCycle.getPlayer().getNickname();
+				if (!thisNickname.equals(nickname)) {
+					query = Query.sendNewPlayer(thisNickname, ColorUtils.colorToString(lightCycle.getCycleColor()),
+							ColorUtils.colorToString(lightCycle.getJetColor()));
+					server.sendToTCP(connection.getID(), query);
+				}
+			}
+		}
 	}
 
 	private static boolean isExist(String nickname) {

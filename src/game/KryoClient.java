@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import com.esotericsoftware.kryonet.Listener;
 import game.entities.Entity;
 import game.entities.LightCycle;
 import game.protocol.Query;
+import game.utils.ColorUtils;
 
 public class KryoClient {
 
@@ -73,6 +75,18 @@ public class KryoClient {
 			lastReply = object;
 			waitingForReply = false;
 		}
+		if (object.contains(Query.NEW_PLAYER)) {
+			processNewPlayerData(data[2]);
+		}
+	}
+
+	private static void processNewPlayerData(String data) {
+		String[] newPlayerData = data.split(",");
+		Color cycleColor = ColorUtils.stringToColor(newPlayerData[0]);
+		Color jetColor = ColorUtils.stringToColor(newPlayerData[1]);
+		String nickname = newPlayerData[2];
+		LightCycle lightCycle = new LightCycle(cycleColor, jetColor, nickname);
+		entities.add(lightCycle);
 	}
 
 	private static void processEntitiesData(String[] data) {
@@ -98,7 +112,7 @@ public class KryoClient {
 		for (Entity entity : entities) {
 			if (entity instanceof LightCycle) {
 				LightCycle lightCycle = (LightCycle) entity;
-				if (lightCycle.getPlayer().getNickname().equals(nickname)) {
+				if (lightCycle.getPlayer().getNickname().contains(nickname)) {
 					return lightCycle;
 				}
 			}

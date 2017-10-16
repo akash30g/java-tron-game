@@ -12,7 +12,20 @@ public class ColorUtils {
 		case "Green":
 			return Color.GREEN;
 		default:
-			return Color.CYAN;
+			return Color.RED;
+		}
+	}
+
+	public static String colorToString(Color color) {
+		switch (color.toString()) {
+		case "java.awt.Color[r=255,g=0,b=0]":
+			return "Red";
+		case "java.awt.Color[r=0,g=255,b=0]":
+			return "Green";
+		case "java.awt.Color[r=0,g=0,b=255]":
+			return "Blue";
+		default:
+			return "Red";
 		}
 	}
 }

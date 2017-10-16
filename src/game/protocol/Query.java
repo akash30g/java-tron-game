@@ -10,6 +10,8 @@ public class Query {
 	public final static String ADD = "ADD";
 	public final static String PLAYERS = "PLAYERS";
 	public final static String REPLY = "REPLY";
+	public final static String NEW_PLAYER = "NEW PLAYER";
+	public final static String OTHER_PLAYERS = "OTHER PLAYERS";
 
 	/*
 	 * Client request
@@ -59,6 +61,10 @@ public class Query {
 	public static String saveScore(String name, int score) {
 		return new StringBuilder().append("SAVE SCORE ").append(name).append(" ").append(score).toString();
 	}
+	
+	/*
+	 * Server queries
+	 */
 
 	public static String sendPlayers(List<LightCycle> lightCycles) {
 		StringBuilder sb = new StringBuilder(PLAYERS).append(" ");
@@ -75,5 +81,34 @@ public class Query {
 		}
 		return sb.substring(0, sb.length() - 1);
 	}
+	
+	public static String sendNewPlayer(String nickname, String cycleColor, String jetColor) {
+		return new StringBuilder(NEW_PLAYER)
+				.append(" ")
+				.append(cycleColor)
+				.append(",")
+				.append(jetColor)
+				.append(",")
+				.append(nickname)
+				.toString();
+	}
+	
+//	public static String sendOtherPlayers(String nickname, List<LightCycle> lightCycles) {
+//		StringBuilder sb = new StringBuilder(OTHER_PLAYERS).append(" ");
+//		for (LightCycle lightCycle : lightCycles) {
+//			if (!lightCycle.getPlayer().getNickname().equals(nickname)) {
+//				sb
+//				.append(lightCycle.getPlayer().getNickname())
+//				.append(",")
+//				.append(lightCycle.getX())
+//				.append(",")
+//				.append(lightCycle.getY())
+//				.append(",")
+//				.append(lightCycle.isJetWallOn())
+//				.append(",");
+//			}
+//		}
+//		return sb.substring(0, sb.length() - 1);
+//	}
 
 }
