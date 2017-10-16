@@ -1,4 +1,4 @@
-package protocol;
+package game.protocol;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ public class Query {
 	public final static String USER = "USER";
 	public final static String ADD = "ADD";
 	public final static String PLAYERS = "PLAYERS";
+	public final static String REPLY = "REPLY";
 
 	/*
 	 * Client request

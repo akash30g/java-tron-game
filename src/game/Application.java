@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import protocol.Query;
+import game.protocol.Query;
 
 public class Application extends JFrame {
 
@@ -54,29 +54,32 @@ public class Application extends JFrame {
 			try {
 				KryoServer.start(12345, 12345);
 				KryoClient.connect("localhost", 12345, 12345);
-				initPlayerMenu();
+				registerPlayer();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Server start failed. Application shutdown.");
-				e.printStackTrace();
+				System.exit(0);
 			}
 			break;
 		case "2":
 			try {
 				KryoClient.connect("localhost", 12345, 12345);
-				initPlayerMenu();
+				registerPlayer();
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Connection failed. Application shutdown.");
+				System.exit(0);
 			}
 			break;
 		case "3":
 			System.exit(0);
 			break;
 		default:
+			JOptionPane.showMessageDialog(null, "Unrecognized parameters. Application shutdown.");
 			System.exit(0);
+			break;
 		}
 	}
 
-	private static void initPlayerMenu() {
+	private static void registerPlayer() {
 		JTextField nicknameField = new JTextField();
 		JPanel holder = new JPanel();
 		holder.setLayout(new BoxLayout(holder, 1));
@@ -95,7 +98,10 @@ public class Application extends JFrame {
 		String jetColor = (String) jetWallColorComboBox.getSelectedItem();
 		KryoClient.setNickname(nickname);
 		String request = Query.add(nickname, cycleColor, jetColor);
-		KryoClient.send(request);
+		KryoClient.sendAndWait(request);
+		while (KryoClient.isWaitingForReply())
+			;
+		String reply = KryoClient.getLastReply();
 	}
 
 }

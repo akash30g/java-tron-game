@@ -94,7 +94,7 @@ public class Map extends JPanel {
 				LightCycle lightCycle = (LightCycle) entity;
 				Color color = lightCycle.getCycleColor();
 				g.setColor(color);
-				g.fillRect(lightCycle.getX(), lightCycle.getY(), 15, 15);
+				g.fillRect(lightCycle.getX(), lightCycle.getY(), 45, 15);
 				g.drawString(((LightCycle) entity).getPlayer().getNickname(), lightCycle.getX(),
 						lightCycle.getY() - 25);
 			}

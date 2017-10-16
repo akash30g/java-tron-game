@@ -10,13 +10,16 @@ import com.esotericsoftware.kryonet.Listener;
 
 import game.entities.Entity;
 import game.entities.LightCycle;
-import protocol.Query;
+import game.protocol.Query;
 
 public class KryoClient {
 
 	private static Client client;
 	private static String nickname;
 	private static List<Entity> entities = new ArrayList<>();
+
+	private static boolean waitingForReply = false;
+	private static String lastReply = "";
 
 	public static void connect(String host, int tcpPort, int udpPort) throws IOException {
 		client = new Client();
@@ -47,10 +50,27 @@ public class KryoClient {
 		client.sendTCP(data);
 	}
 
+	public static void sendAndWait(String data) {
+		client.sendTCP(data);
+		waitingForReply = true;
+	}
+
+	public static boolean isWaitingForReply() {
+		return waitingForReply;
+	}
+
+	public static String getLastReply() {
+		return lastReply;
+	}
+
 	private static void processData(String object) {
 		String[] data = object.split(" ");
-		if (data[0].equals(Query.PLAYERS)) {
+		String keyword = data[0];
+		if (keyword.equals(Query.PLAYERS)) {
 			processEntitiesData(data);
+		}
+		if (keyword.equals(Query.REPLY)) {
+			waitingForReply = false;
 		}
 	}
 

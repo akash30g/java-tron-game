@@ -13,7 +13,8 @@ import com.esotericsoftware.kryonet.Server;
 import game.entities.Entity;
 import game.entities.LightCycle;
 import game.entities.Wall;
-import protocol.Query;
+import game.protocol.Query;
+import game.utils.ColorUtils;
 
 public class KryoServer {
 
