@@ -13,6 +13,7 @@ import com.esotericsoftware.kryonet.Server;
 import game.entities.Entity;
 import game.entities.LightCycle;
 import game.entities.Wall;
+import protocol.Query;
 
 public class KryoServer {
 
@@ -84,19 +85,7 @@ public class KryoServer {
 		if (lightCycles.isEmpty()) {
 			return;
 		}
-		StringBuilder sb = new StringBuilder();
-		for (Entity entity : lightCycles) {
-			sb.append("ENTITIES").append(">");
-			if (entity instanceof LightCycle) {
-				LightCycle lightCycle = (LightCycle) entity;
-				sb.append(lightCycle).append(">");
-			}
-			if (entity instanceof Wall) {
-				Wall wall = (Wall) entity;
-				sb.append(wall).append(">");
-			}
-		}
-		String result = sb.subSequence(0, sb.length() - 1).toString();
+		String result = Query.sendPlayers(lightCycles);
 		server.sendToAllUDP(result);
 	}
 

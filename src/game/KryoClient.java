@@ -1,6 +1,5 @@
 package game;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +10,7 @@ import com.esotericsoftware.kryonet.Listener;
 
 import game.entities.Entity;
 import game.entities.LightCycle;
+import protocol.Query;
 
 public class KryoClient {
 
@@ -48,41 +48,28 @@ public class KryoClient {
 	}
 
 	private static void processData(String object) {
-		String[] data = object.split(">");
-		if (data[0].equals("ENTITIES")) {
+		String[] data = object.split(" ");
+		if (data[0].equals(Query.PLAYERS)) {
 			processEntitiesData(data);
 		}
 	}
 
 	private static void processEntitiesData(String[] data) {
-		for (int i = 1; i < data.length; i++) {
-			String entity = data[i];
-			String[] entityData = entity.split(";");
-			createEntityFromData(entityData);
+		data = data[1].split(",");
+		for (int i = 0; i < data.length; i += 4) {
+			String nickname = data[i];
+			Integer x = Integer.valueOf(data[i + 1]);
+			Integer y = Integer.valueOf(data[i + 2]);
+			Boolean isJetOn = Boolean.valueOf(data[i + 3]);
+
+			LightCycle lightCycle = getLightCycleByName(nickname);
+			lightCycle.setX(x);
+			lightCycle.setY(y);
+			lightCycle.setJetWallOn(isJetOn);
 		}
 	}
 
-	private static void createEntityFromData(String[] entityData) {
-		if (entityData[0].equals("Wall")) {
-			// TODO
-		}
-		if (entityData[0].equals("LightCycle")) {
-			String x = entityData[1];
-			String y = entityData[2];
-			String nickname = entityData[3];
-			if (getPlayerByNickname(nickname) != null) {
-				LightCycle lightCycle = getPlayerByNickname(nickname);
-				lightCycle.setX(Integer.valueOf(x));
-				lightCycle.setY(Integer.valueOf(y));
-			} else {
-				LightCycle lightCycle = new LightCycle(Integer.valueOf(x), Integer.valueOf(y), Color.BLUE, Color.BLUE,
-						nickname);
-				entities.add(lightCycle);
-			}
-		}
-	}
-
-	private static LightCycle getPlayerByNickname(String nickname) {
+	private static LightCycle getLightCycleByName(String nickname) {
 		for (Entity entity : entities) {
 			if (entity instanceof LightCycle) {
 				LightCycle lightCycle = (LightCycle) entity;
@@ -95,7 +82,7 @@ public class KryoClient {
 	}
 
 	public static LightCycle getThisPlayer() {
-		return getPlayerByNickname(nickname);
+		return getLightCycleByName(nickname);
 	}
 
 }

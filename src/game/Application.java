@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import protocol.QueryGen;
+import protocol.Query;
 
 public class Application extends JFrame {
 
@@ -94,7 +94,7 @@ public class Application extends JFrame {
 		String cycleColor = (String) cycleColorComboBox.getSelectedItem();
 		String jetColor = (String) jetWallColorComboBox.getSelectedItem();
 		KryoClient.setNickname(nickname);
-		String request = QueryGen.add(nickname, cycleColor, jetColor);
+		String request = Query.add(nickname, cycleColor, jetColor);
 		KryoClient.send(request);
 	}
 
