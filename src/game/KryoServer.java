@@ -17,17 +17,13 @@ import game.entities.Wall;
 public class KryoServer {
 
 	private static Server server = new Server();
-	private static List<Entity> entities = new ArrayList<>();
+	private static List<LightCycle> lightCycles = new ArrayList<>();
 
 	/*
 	 * Test
 	 */
 
 	static {
-		// entities = new ArrayList<>();
-		// entities.add(new Wall(35, 45));
-		// entities.add(new LightCycle(35, 45, Color.BLUE, Color.GREEN, "test"));
-		// entities.add(new Wall(25, 45, (LightCycle) entities.get(1)));
 
 		new Thread(new Runnable() {
 
@@ -80,16 +76,16 @@ public class KryoServer {
 		}).start();
 	}
 
-	public static List<Entity> getEntities() {
-		return entities;
+	public static List<LightCycle> getLightCycles() {
+		return lightCycles;
 	}
 
 	public static void sendEntities() {
-		if (entities.isEmpty()) {
+		if (lightCycles.isEmpty()) {
 			return;
 		}
 		StringBuilder sb = new StringBuilder();
-		for (Entity entity : entities) {
+		for (Entity entity : lightCycles) {
 			sb.append("ENTITIES").append(">");
 			if (entity instanceof LightCycle) {
 				LightCycle lightCycle = (LightCycle) entity;
@@ -105,18 +101,20 @@ public class KryoServer {
 	}
 
 	private static void processData(String object, Connection connection) {
-		String[] data = object.split(";");
-		if (data[0].equals("CONNECT")) {
+		String[] data = object.split(" ");
+		if (data[0].equals("ADD")) {
 			processConnectData(data, connection);
 		}
 	}
 
 	private static void processConnectData(String[] data, Connection connection) {
-		String nickname = data[1];
+		String nickname = data[2];
 		connection.setName(nickname);
-		Color cycleColor = ColorUtils.stringToColor(data[2]);
-		Color jetColor = ColorUtils.stringToColor(data[3]);
-		entities.add(new LightCycle(15, 15, cycleColor, jetColor, nickname));
+		Color cycleColor = ColorUtils.stringToColor(data[3]);
+		Color jetColor = ColorUtils.stringToColor(data[4]);
+		int randX = 15; // TODO remove
+		int randY = 15; // TODO remove
+		lightCycles.add(new LightCycle(randX, randY, cycleColor, jetColor, nickname));
 	}
 
 }

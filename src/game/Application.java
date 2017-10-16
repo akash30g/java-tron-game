@@ -11,6 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import protocol.QueryGen;
+
 public class Application extends JFrame {
 
 	public Application() {
@@ -81,19 +83,19 @@ public class Application extends JFrame {
 		holder.add(new JLabel("Input your nickname:"));
 		holder.add(nicknameField);
 		holder.add(new JLabel("Choose your cycle color:"));
-		JComboBox<String> cycleColorComboBox = new JComboBox<>(new String[] { "Blue", "Red", "Green" });
+		String[] colors = { "Blue", "Red", "Green" };
+		JComboBox<String> cycleColorComboBox = new JComboBox<>(colors);
 		holder.add(cycleColorComboBox);
 		holder.add(new JLabel("Choose your jetwall color:"));
-		JComboBox<String> jetWallColorComboBox = new JComboBox<>(new String[] { "Blue", "Red", "Green" });
+		JComboBox<String> jetWallColorComboBox = new JComboBox<>(colors);
 		holder.add(jetWallColorComboBox);
 		JOptionPane.showMessageDialog(null, holder);
 		String nickname = nicknameField.getText();
 		String cycleColor = (String) cycleColorComboBox.getSelectedItem();
 		String jetColor = (String) jetWallColorComboBox.getSelectedItem();
 		KryoClient.setNickname(nickname);
-		String data = new StringBuilder().append("CONNECT").append(";").append(nickname).append(";").append(cycleColor)
-				.append(";").append(jetColor).toString();
-		KryoClient.send(data);
+		String request = QueryGen.add(nickname, cycleColor, jetColor);
+		KryoClient.send(request);
 	}
 
 }
