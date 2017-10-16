@@ -70,12 +70,14 @@ public class KryoClient {
 			processEntitiesData(data);
 		}
 		if (keyword.equals(Query.REPLY)) {
+			lastReply = object;
 			waitingForReply = false;
 		}
 	}
 
 	private static void processEntitiesData(String[] data) {
 		data = data[1].split(",");
+
 		for (int i = 0; i < data.length; i += 4) {
 			String nickname = data[i];
 			Integer x = Integer.valueOf(data[i + 1]);
@@ -83,6 +85,9 @@ public class KryoClient {
 			Boolean isJetOn = Boolean.valueOf(data[i + 3]);
 
 			LightCycle lightCycle = getLightCycleByName(nickname);
+			if (lightCycle == null) {
+				return;
+			}
 			lightCycle.setX(x);
 			lightCycle.setY(y);
 			lightCycle.setJetWallOn(isJetOn);

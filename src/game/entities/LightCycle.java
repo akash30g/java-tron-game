@@ -24,6 +24,16 @@ public class LightCycle extends Entity {
 		this.jetColor = jetColor;
 	}
 
+	public LightCycle(Color cycleColor, Color jetColor, String nickname) {
+		super(0, 0);
+		this.velocity = 10;
+		this.direction = Direction.DOWN;
+		this.player = new Player(nickname);
+		this.isJetWallOn = true;
+		this.cycleColor = cycleColor;
+		this.jetColor = jetColor;
+	}
+
 	private double velocity;
 	private boolean isJetWallOn;
 	private Direction direction;

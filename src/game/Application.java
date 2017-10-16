@@ -11,7 +11,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import game.entities.LightCycle;
 import game.protocol.Query;
+import game.utils.ColorUtils;
+import game.utils.ReplyUtils;
 
 public class Application extends JFrame {
 
@@ -102,6 +105,13 @@ public class Application extends JFrame {
 		while (KryoClient.isWaitingForReply())
 			;
 		String reply = KryoClient.getLastReply();
+		if (!ReplyUtils.isFailed(reply)) {
+			KryoClient.getEntities().add(
+					new LightCycle(ColorUtils.stringToColor(cycleColor), ColorUtils.stringToColor(jetColor), nickname));
+		} else {
+			JOptionPane.showMessageDialog(null, ReplyUtils.getFailedReason(reply));
+			System.exit(0);
+		}
 	}
 
 }

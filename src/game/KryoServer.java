@@ -99,12 +99,26 @@ public class KryoServer {
 
 	private static void processConnectData(String[] data, Connection connection) {
 		String nickname = data[2];
+		if (isExist(nickname)) {
+			server.sendToTCP(connection.getID(), "REPLY FAILED Error. Such nickname is already registered");
+			return;
+		}
 		connection.setName(nickname);
 		Color cycleColor = ColorUtils.stringToColor(data[3]);
 		Color jetColor = ColorUtils.stringToColor(data[4]);
 		int randX = 15; // TODO remove
 		int randY = 15; // TODO remove
 		lightCycles.add(new LightCycle(randX, randY, cycleColor, jetColor, nickname));
+		server.sendToTCP(connection.getID(), "REPLY OKAY");
+	}
+
+	private static boolean isExist(String nickname) {
+		for (LightCycle lightCycle : lightCycles) {
+			if (lightCycle.getPlayer().getNickname().equals(nickname)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
