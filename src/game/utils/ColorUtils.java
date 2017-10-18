@@ -2,6 +2,10 @@ package game.utils;
 
 import java.awt.Color;
 
+/*
+ * This class helps to convert string to color and vice versa
+ */
+
 public class ColorUtils {
 	public static Color stringToColor(String color) {
 		switch (color) {

@@ -2,6 +2,10 @@ package game.entities;
 
 import java.awt.Color;
 
+/*
+ * Class that holds main logic for light cycle
+ */
+
 public class LightCycle extends Entity {
 
 	private double velocity;
@@ -32,6 +36,10 @@ public class LightCycle extends Entity {
 		this.jetColor = jetColor;
 	}
 
+	/*
+	 * Move for 15px in specified direction
+	 */
+
 	public void move() {
 		switch (direction) {
 		case UP:
@@ -48,6 +56,10 @@ public class LightCycle extends Entity {
 			break;
 		}
 	}
+
+	/*
+	 * Change direction according to the current
+	 */
 
 	public void turnLeft() {
 		switch (direction) {
@@ -83,18 +95,30 @@ public class LightCycle extends Entity {
 		}
 	}
 
+	/*
+	 * Increment velocity
+	 */
+
 	public void accelerate() {
-		if (velocity != 9) {
+		if (velocity != 9) { // Make sure it can't go higher than 9
 			velocity++;
 		}
 	}
 
+	/*
+	 * Decrement velocity
+	 */
+
 	public void slowDown() {
-		if (velocity != 1) {
+		if (velocity != 1) {	// Make sure it can't go lower than 1
 			velocity--;
 		}
 	}
 
+	/*
+	 * Getters & Setters and toString()
+	 */
+	
 	public boolean isDerezzed() {
 		return isDerezzed;
 	}

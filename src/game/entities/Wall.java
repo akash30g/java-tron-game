@@ -1,5 +1,9 @@
 package game.entities;
 
+/*
+ * Class that holds wall logic
+ */
+
 public class Wall extends Entity {
 
 	public Wall(int x, int y) {

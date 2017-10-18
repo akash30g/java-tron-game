@@ -1,5 +1,9 @@
 package game.entities;
 
+/*
+ * Class that holds client information
+ */
+
 public class Player {
 	private String nickname;
 	private int score = 0;
@@ -11,7 +15,7 @@ public class Player {
 	public int getScore() {
 		return score;
 	}
-	
+
 	public void incrementScore() {
 		score++;
 	}

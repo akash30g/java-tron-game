@@ -1,6 +1,15 @@
 package game.entities;
 
+/*
+ * Abstract class for all entities in the game
+ */
+
 public abstract class Entity {
+	
+	/*
+	 * Coordinates
+	 */
+	
 	private int x;
 	private int y;
 

@@ -4,8 +4,16 @@ import java.util.List;
 
 import game.entities.LightCycle;
 
+/*
+ * This class creates queries that could be send from client to server and vice versa
+ */
+
 public class Query {
-	
+
+	/*
+	 * Some constansts
+	 */
+
 	public final static String USER = "USER";
 	public final static String ADD = "ADD";
 	public final static String PLAYERS = "PLAYERS";
@@ -34,16 +42,8 @@ public class Query {
 	}
 
 	public static String add(String name, String cycleColor, String wallColor) {
-		return new StringBuilder()
-				.append(ADD)
-				.append(" ")
-				.append(USER)
-				.append(" ")
-				.append(name)
-				.append(" ")
-				.append(cycleColor)
-				.append(" ")
-				.append(wallColor).toString();
+		return new StringBuilder().append(ADD).append(" ").append(USER).append(" ").append(name).append(" ")
+				.append(cycleColor).append(" ").append(wallColor).toString();
 	}
 
 	public static String remove(String name) {
@@ -61,7 +61,7 @@ public class Query {
 	public static String saveScore(String name, int score) {
 		return new StringBuilder().append("SAVE SCORE ").append(name).append(" ").append(score).toString();
 	}
-	
+
 	/*
 	 * Server queries
 	 */
@@ -70,29 +70,16 @@ public class Query {
 		StringBuilder sb = new StringBuilder(PLAYERS).append(" ");
 		for (LightCycle lightCycle : lightCycles) {
 			if (!lightCycle.isDerezzed()) {
-				sb
-				.append(lightCycle.getPlayer().getNickname())
-				.append(",")
-				.append(lightCycle.getX())
-				.append(",")
-				.append(lightCycle.getY())
-				.append(",")
-				.append(lightCycle.isJetWallOn())
-				.append(",");
+				sb.append(lightCycle.getPlayer().getNickname()).append(",").append(lightCycle.getX()).append(",")
+						.append(lightCycle.getY()).append(",").append(lightCycle.isJetWallOn()).append(",");
 			}
 		}
 		return sb.substring(0, sb.length() - 1);
 	}
-	
+
 	public static String sendNewPlayer(String nickname, String cycleColor, String jetColor) {
-		return new StringBuilder(NEW_PLAYER)
-				.append(" ")
-				.append(cycleColor)
-				.append(",")
-				.append(jetColor)
-				.append(",")
-				.append(nickname)
-				.toString();
+		return new StringBuilder(NEW_PLAYER).append(" ").append(cycleColor).append(",").append(jetColor).append(",")
+				.append(nickname).toString();
 	}
-	
+
 }
