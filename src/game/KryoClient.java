@@ -72,7 +72,6 @@ public class KryoClient {
 	private static void processData(String object) {
 		String[] data = object.split(" ");
 		String keyword = data[0];
-		System.out.println(object);
 		if (keyword.equals(Query.PLAYERS)) {
 			processEntitiesData(data);
 		}
