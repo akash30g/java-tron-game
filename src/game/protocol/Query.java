@@ -95,22 +95,4 @@ public class Query {
 				.toString();
 	}
 	
-//	public static String sendOtherPlayers(String nickname, List<LightCycle> lightCycles) {
-//		StringBuilder sb = new StringBuilder(OTHER_PLAYERS).append(" ");
-//		for (LightCycle lightCycle : lightCycles) {
-//			if (!lightCycle.getPlayer().getNickname().equals(nickname)) {
-//				sb
-//				.append(lightCycle.getPlayer().getNickname())
-//				.append(",")
-//				.append(lightCycle.getX())
-//				.append(",")
-//				.append(lightCycle.getY())
-//				.append(",")
-//				.append(lightCycle.isJetWallOn())
-//				.append(",");
-//			}
-//		}
-//		return sb.substring(0, sb.length() - 1);
-//	}
-
 }
