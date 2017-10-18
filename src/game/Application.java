@@ -102,8 +102,10 @@ public class Application extends JFrame {
 		KryoClient.setNickname(nickname);
 		String request = Query.add(nickname, cycleColor, jetColor);
 		KryoClient.sendAndWait(request);
+		System.out.println("[LOG] Waiting.");
 		while (KryoClient.isWaitingForReply())
 			;
+		System.out.println("[LOG] Connected.");
 		String reply = KryoClient.getLastReply();
 		if (!ReplyUtils.isFailed(reply)) {
 			KryoClient.getEntities().add(
@@ -112,6 +114,7 @@ public class Application extends JFrame {
 			JOptionPane.showMessageDialog(null, ReplyUtils.getFailedReason(reply));
 			System.exit(0);
 		}
+
 	}
 
 }

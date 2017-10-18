@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -22,6 +24,7 @@ public class KryoClient {
 	private static List<Entity> entities = new ArrayList<>();
 
 	private static boolean waitingForReply = false;
+	private static boolean isGameReady = false;
 	private static String lastReply = "";
 
 	public static void connect(String host, int tcpPort, int udpPort) throws IOException {
@@ -69,6 +72,7 @@ public class KryoClient {
 	private static void processData(String object) {
 		String[] data = object.split(" ");
 		String keyword = data[0];
+		System.out.println(object);
 		if (keyword.equals(Query.PLAYERS)) {
 			processEntitiesData(data);
 		}
@@ -79,6 +83,17 @@ public class KryoClient {
 		if (object.contains(Query.NEW_PLAYER)) {
 			processNewPlayerData(data[2]);
 		}
+		if (object.contains("GAME IS READY")) {
+			isGameReady = true;
+		}
+		if (object.contains("GAME OVER")) {
+			JOptionPane.showMessageDialog(null, "Game is over");
+			System.exit(0);
+		}
+	}
+
+	public static boolean isGameReady() {
+		return isGameReady;
 	}
 
 	private static void processNewPlayerData(String data) {
@@ -91,6 +106,9 @@ public class KryoClient {
 	}
 
 	private static void processEntitiesData(String[] data) {
+		if (data.length == 1) {
+			return;
+		}
 		data = data[1].split(",");
 
 		for (int i = 0; i < data.length; i += 4) {
@@ -103,16 +121,22 @@ public class KryoClient {
 			if (lightCycle == null) {
 				return;
 			}
-			
+
 			if (lightCycle.isJetWallOn()) {
 				int wallX = lightCycle.getX();
 				int wallY = lightCycle.getY();
 				entities.add(new Wall(wallX, wallY, lightCycle));
+				lightCycle.getPlayer().incrementScore();
 			}
-			
+
 			lightCycle.setX(x);
 			lightCycle.setY(y);
 			lightCycle.setJetWallOn(isJetOn);
+
+			if (isCrashed(lightCycle)) {
+				send(Query.remove(nickname));
+				send("USER " + lightCycle.getPlayer().getNickname() + " SCORE " + lightCycle.getPlayer().getScore());
+			}
 		}
 	}
 
@@ -128,8 +152,15 @@ public class KryoClient {
 		return null;
 	}
 
-	public static LightCycle getThisPlayer() {
-		return getLightCycleByName(nickname);
+	private static boolean isCrashed(LightCycle lightCycle) {
+		for (Entity entity : entities) {
+			if (entity.getX() == lightCycle.getX() && entity.getY() == lightCycle.getY()) {
+				if (!entity.equals(lightCycle)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

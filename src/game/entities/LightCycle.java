@@ -4,15 +4,13 @@ import java.awt.Color;
 
 public class LightCycle extends Entity {
 
-	public LightCycle(int x, int y) {
-		super(x, y);
-	}
-
-	public LightCycle(int x, int y, Color cycleColor, Color jetColor) {
-		super(x, y);
-		this.cycleColor = cycleColor;
-		this.jetColor = jetColor;
-	}
+	private double velocity;
+	private boolean isJetWallOn;
+	private Direction direction;
+	private Color cycleColor;
+	private Color jetColor;
+	private Player player;
+	private boolean isDerezzed;
 
 	public LightCycle(int x, int y, Color cycleColor, Color jetColor, String nickname) {
 		super(x, y);
@@ -33,13 +31,6 @@ public class LightCycle extends Entity {
 		this.cycleColor = cycleColor;
 		this.jetColor = jetColor;
 	}
-
-	private double velocity;
-	private boolean isJetWallOn;
-	private Direction direction;
-	private Color cycleColor;
-	private Color jetColor;
-	private Player player;
 
 	public void move() {
 		switch (direction) {
@@ -102,6 +93,14 @@ public class LightCycle extends Entity {
 		if (velocity != 1) {
 			velocity--;
 		}
+	}
+
+	public boolean isDerezzed() {
+		return isDerezzed;
+	}
+
+	public void setDerezzed(boolean isDerezzed) {
+		this.isDerezzed = isDerezzed;
 	}
 
 	public double getVelocity() {

@@ -8,13 +8,14 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import game.entities.Direction;
 import game.entities.Entity;
 import game.entities.LightCycle;
 import game.entities.Wall;
 import game.protocol.Query;
 
 public class Map extends JPanel {
+
+	private static final long serialVersionUID = 1338402938933071768L;
 
 	public Map() {
 		setFocusable(true);
@@ -83,22 +84,28 @@ public class Map extends JPanel {
 	}
 
 	private void drawEntities(Graphics g) {
-		List<Entity> entities = KryoClient.getEntities();
-		for (Entity entity : entities) {
-			if (entity instanceof Wall) {
-				Wall wall = (Wall) entity;
-				Color color = wall.getOwner().getJetColor();
-				g.setColor(color);
-				g.fillRect(wall.getX(), wall.getY(), 7, 7);
+		try {
+			List<Entity> entities = KryoClient.getEntities();
+			for (Entity entity : entities) {
+				if (entity instanceof Wall) {
+					Wall wall = (Wall) entity;
+					Color color = wall.getOwner().getJetColor();
+					g.setColor(color);
+					g.fillRect(wall.getX(), wall.getY(), 7, 7);
+				}
+				if (entity instanceof LightCycle) {
+					LightCycle lightCycle = (LightCycle) entity;
+					if (lightCycle.getX() == 0 || lightCycle.getY() == 0) {
+						return;
+					}
+					Color color = lightCycle.getCycleColor();
+					g.setColor(color);
+					g.fillRect(lightCycle.getX(), lightCycle.getY(), 15, 15);
+					g.drawString(lightCycle.getPlayer().getNickname(), lightCycle.getX(), lightCycle.getY() - 25);
+				}
 			}
-			if (entity instanceof LightCycle) {
-				LightCycle lightCycle = (LightCycle) entity;
-				Color color = lightCycle.getCycleColor();
-				g.setColor(color);
-				g.fillRect(lightCycle.getX(), lightCycle.getY(), 15, 15);
-				g.drawString(((LightCycle) entity).getPlayer().getNickname(), lightCycle.getX(),
-						lightCycle.getY() - 25);
-			}
+		} catch (Exception e) {
+
 		}
 	}
 

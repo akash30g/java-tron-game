@@ -69,15 +69,17 @@ public class Query {
 	public static String sendPlayers(List<LightCycle> lightCycles) {
 		StringBuilder sb = new StringBuilder(PLAYERS).append(" ");
 		for (LightCycle lightCycle : lightCycles) {
-			sb
-			.append(lightCycle.getPlayer().getNickname())
-			.append(",")
-			.append(lightCycle.getX())
-			.append(",")
-			.append(lightCycle.getY())
-			.append(",")
-			.append(lightCycle.isJetWallOn())
-			.append(",");
+			if (!lightCycle.isDerezzed()) {
+				sb
+				.append(lightCycle.getPlayer().getNickname())
+				.append(",")
+				.append(lightCycle.getX())
+				.append(",")
+				.append(lightCycle.getY())
+				.append(",")
+				.append(lightCycle.isJetWallOn())
+				.append(",");
+			}
 		}
 		return sb.substring(0, sb.length() - 1);
 	}
