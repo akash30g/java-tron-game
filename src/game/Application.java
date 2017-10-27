@@ -32,7 +32,7 @@ public class Application extends JFrame {
 		initUI();
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 
 		/*
 		 * Before the game starts, create and show menu
@@ -70,7 +70,7 @@ public class Application extends JFrame {
 	 * This contains main menu logic
 	 */
 
-	private static void initMainMenu() {
+	private static void initMainMenu() throws InterruptedException {
 
 		/*
 		 * Create menu with those strings
@@ -118,7 +118,7 @@ public class Application extends JFrame {
 		}
 	}
 
-	private static void registerPlayer() {
+	private static void registerPlayer() throws InterruptedException {
 
 		/*
 		 * Create form for nickname and two colors
@@ -159,8 +159,10 @@ public class Application extends JFrame {
 		 */
 
 		System.out.println("[LOG] Waiting.");
-		while (KryoClient.isWaitingForReply())
-			;
+		while (KryoClient.isWaitingForReply()) {
+			Thread.sleep(500);
+		}
+			
 		System.out.println("[LOG] Connected.");
 		String reply = KryoClient.getLastReply();
 

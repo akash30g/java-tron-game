@@ -81,6 +81,12 @@ public class Map extends JPanel {
 		for (int i = 0; i < max; i += step) {
 			g.drawLine(i, 0, i, max);
 		}
+		
+		g.setColor(Color.white);
+		g.drawLine(1, 0, 1, max);
+		g.drawLine(1, 0, 795, 1);
+		g.drawLine(795, 1, 795, 795);
+		g.drawLine(1, 750, max, 750);
 	}
 
 	private void drawEntities(Graphics g) {

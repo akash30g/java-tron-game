@@ -70,7 +70,7 @@ public class KryoServer {
 						Thread.sleep(300); // TODO change to 100
 						for (LightCycle lightCycle : lightCycles) {
 							lightCycle.move();
-							if (lightCycle.getX() < -5 || lightCycle.getY() < -5) {
+							if (isCrashed(lightCycle)) {
 								lightCycle.setDerezzed(true);
 							}
 						}
@@ -171,7 +171,7 @@ public class KryoServer {
 		connection.setName(nickname);
 		Color cycleColor = ColorUtils.stringToColor(data[3]);
 		Color jetColor = ColorUtils.stringToColor(data[4]);
-		LightCycle newLightCycle = new LightCycle(-1, -1, cycleColor, jetColor, nickname);
+		LightCycle newLightCycle = new LightCycle(5, 5, cycleColor, jetColor, nickname);
 		putRandomlyOnGrid(newLightCycle);
 		lightCycles.add(newLightCycle);
 		server.sendToTCP(connection.getID(), "REPLY OKAY");
@@ -255,6 +255,16 @@ public class KryoServer {
 			if (activePlayers == 1) {
 				return true;
 			}
+		}
+		return false;
+	}
+
+	private static boolean isCrashed(LightCycle lightCycle) {
+		if (lightCycle.getX() < -5 || lightCycle.getY() < -5) {
+			return true;
+		}
+		if (lightCycle.getX() > 805 || lightCycle.getY() > 805) {
+			return true;
 		}
 		return false;
 	}
