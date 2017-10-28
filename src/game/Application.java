@@ -92,7 +92,8 @@ public class Application extends JFrame {
 		case "1": // If input is 1
 			try {
 				KryoServer.start(12345, 12345); // Start server
-				KryoClient.connect("localhost", 12345, 12345); // Connect
+				String IP = getIP();
+				KryoClient.connect(IP, 12345, 12345); // Connect
 				registerPlayer(); // Register new player
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Server start failed. Application shutdown.");
@@ -101,7 +102,8 @@ public class Application extends JFrame {
 			break;
 		case "2": // If input is 2
 			try {
-				KryoClient.connect("localhost", 12345, 12345); // Connect
+				String IP = getIP();
+				KryoClient.connect(IP, 12345, 12345); // Connect
 				registerPlayer(); // Register new player
 			} catch (IOException e) {
 				JOptionPane.showMessageDialog(null, "Connection failed. Application shutdown.");
@@ -116,6 +118,10 @@ public class Application extends JFrame {
 			System.exit(0);
 			break;
 		}
+	}
+	
+	private static String getIP() {
+		return JOptionPane.showInputDialog("Please input IP");
 	}
 
 	private static void registerPlayer() throws InterruptedException {
